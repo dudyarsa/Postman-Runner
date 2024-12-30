@@ -1,0 +1,1439 @@
+{
+	"info": {
+		"_postman_id": "3b76bd4f-3c13-4bcb-b617-70cb83fc606b",
+		"name": "Folkatech_Dudi_Technical_Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3169591"
+	},
+	"item": [
+		{
+			"name": "Create Ticket Laporan",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Menyusun body request untuk POST /user",
+							"const requestBody = {",
+							"    \"email\": \"rhmtsaepuloh@gmail.com\",",
+							"    \"password\": \"Qwerty123!\",",
+							"    \"reg_id\": 12345",
+							"};",
+							"",
+							"",
+							"// Mengirim request POST untuk membuat user baru",
+							"pm.sendRequest({",
+							"    url: `${pm.collectionVariables.get('api')}/api/login/`,",
+							"    method: 'POST',",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify(requestBody)  // Mengirimkan requestBody sebagai JSON string",
+							"    }",
+							"}, function(err, res) {",
+							"    if (err) {",
+							"        console.log(\"Error:\", err);",
+							"        return;",
+							"    }",
+							"",
+							"    const responseJson = res.json();",
+							"",
+							"    // Menyimpan token ke dalam collection variable token_reuseable setelah response diterima",
+							"    pm.collectionVariables.set('token_reuseable', responseJson.data[\"token\"]);",
+							"",
+							"    // Menampilkan token",
+							"    console.log('Token saved in token_reuseable: ' + responseJson.data[\"token\"]);",
+							"",
+							"    // Melakukan request kedua setelah POST selesai",
+							"    pm.sendRequest({",
+							"        url: `https://postman-echo.com/delay/3`,  // Request untuk delay 3 detik",
+							"        method: 'GET',",
+							"        header: {",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {}",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create Report Response code 200 - OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"pm.test(\"Verified Status = True\", () => {",
+							"  const responseJson = pm.response.json();",
+							"  pm.expect(responseJson.status).to.eql(true);",
+							"});",
+							"",
+							"pm.test(\"Verified Message = Data laporan berhasil dikirim.\", () => {",
+							"  const responseJson = pm.response.json();",
+							"  pm.expect(responseJson.message).to.eql('Data laporan berhasil dikirim.');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_reuseable}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "report_category_id",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "Rahmat Saefulloh",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "l",
+							"type": "text"
+						},
+						{
+							"key": "province_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "tipe_korban",
+							"value": "php",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Tes",
+							"type": "text"
+						},
+						{
+							"key": "lat",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "lng",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "address_location",
+							"value": "Cimahi",
+							"type": "text"
+						},
+						{
+							"key": "userfile",
+							"type": "file",
+							"src": "/Users/rhmtsaepuloh/Downloads/gamaharsaasia.png"
+						},
+						{
+							"key": "urgency",
+							"value": "rendah",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/api/report",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"api",
+						"report"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 - OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "report_category_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "fullname",
+									"value": "Rahmat Saefulloh",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "l",
+									"type": "text"
+								},
+								{
+									"key": "province_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "tipe_korban",
+									"value": "php",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Tes",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "lng",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "address_location",
+									"value": "Cimahi",
+									"type": "text"
+								},
+								{
+									"key": "userfile",
+									"type": "file",
+									"src": "/Users/rhmtsaepuloh/Downloads/5wPdO_1688622116.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/api/report",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"api",
+								"report"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2023 16:47:42 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2023 16:47:42 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.33"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"message\": \"Data laporan berhasil dikirim.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Report Invalid Category ID",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Menyusun body request untuk POST /user",
+							"const requestBody = {",
+							"    \"email\": \"rhmtsaepuloh@gmail.com\",",
+							"    \"password\": \"Qwerty123!\",",
+							"    \"reg_id\": 12345",
+							"};",
+							"",
+							"",
+							"// Mengirim request POST untuk membuat user baru",
+							"pm.sendRequest({",
+							"    url: `${pm.collectionVariables.get('api')}/api/login/`,",
+							"    method: 'POST',",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify(requestBody)  // Mengirimkan requestBody sebagai JSON string",
+							"    }",
+							"}, function(err, res) {",
+							"    if (err) {",
+							"        console.log(\"Error:\", err);",
+							"        return;",
+							"    }",
+							"",
+							"    const responseJson = res.json();",
+							"",
+							"    // Menyimpan token ke dalam collection variable token_reuseable setelah response diterima",
+							"    pm.collectionVariables.set('token_reuseable', responseJson.data[\"token\"]);",
+							"",
+							"    // Menampilkan token",
+							"    console.log('Token saved in token_reuseable: ' + responseJson.data[\"token\"]);",
+							"",
+							"    // Melakukan request kedua setelah POST selesai",
+							"    pm.sendRequest({",
+							"        url: `https://postman-echo.com/delay/3`,  // Request untuk delay 3 detik",
+							"        method: 'GET',",
+							"        header: {",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {}",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verified Status = False\", () => {",
+							"  const responseJson = pm.response.json();",
+							"  pm.expect(responseJson.status).to.eql(false);",
+							"});",
+							"",
+							"pm.test(\"Verified Message = Data kategori tidak ditemukan.\", () => {",
+							"  const responseJson = pm.response.json();",
+							"  pm.expect(responseJson.message).to.eql('Data kategori tidak ditemukan.');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_reuseable}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "report_category_id",
+							"value": "31",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "Rahmat Saefulloh",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "l",
+							"type": "text"
+						},
+						{
+							"key": "province_id",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "tipe_korban",
+							"value": "php",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Tes",
+							"type": "text"
+						},
+						{
+							"key": "lat",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "lng",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "address_location",
+							"value": "Cimahi",
+							"type": "text"
+						},
+						{
+							"key": "userfile",
+							"type": "file",
+							"src": "/Users/rhmtsaepuloh/Downloads/gamaharsaasia.png"
+						},
+						{
+							"key": "urgency",
+							"value": "rendah",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/api/report",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"api",
+						"report"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 - OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "report_category_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "fullname",
+									"value": "Rahmat Saefulloh",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "l",
+									"type": "text"
+								},
+								{
+									"key": "province_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "tipe_korban",
+									"value": "php",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Tes",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "lng",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "address_location",
+									"value": "Cimahi",
+									"type": "text"
+								},
+								{
+									"key": "userfile",
+									"type": "file",
+									"src": "/Users/rhmtsaepuloh/Downloads/5wPdO_1688622116.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/api/report",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"api",
+								"report"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2023 16:47:42 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2023 16:47:42 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.33"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"message\": \"Data laporan berhasil dikirim.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Report Invalid Province ID",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Menyusun body request untuk POST /user",
+							"const requestBody = {",
+							"    \"email\": \"rhmtsaepuloh@gmail.com\",",
+							"    \"password\": \"Qwerty123!\",",
+							"    \"reg_id\": 12345",
+							"};",
+							"",
+							"",
+							"// Mengirim request POST untuk membuat user baru",
+							"pm.sendRequest({",
+							"    url: `${pm.collectionVariables.get('api')}/api/login/`,",
+							"    method: 'POST',",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify(requestBody)  // Mengirimkan requestBody sebagai JSON string",
+							"    }",
+							"}, function(err, res) {",
+							"    if (err) {",
+							"        console.log(\"Error:\", err);",
+							"        return;",
+							"    }",
+							"",
+							"    const responseJson = res.json();",
+							"",
+							"    // Menyimpan token ke dalam collection variable token_reuseable setelah response diterima",
+							"    pm.collectionVariables.set('token_reuseable', responseJson.data[\"token\"]);",
+							"",
+							"    // Menampilkan token",
+							"    console.log('Token saved in token_reuseable: ' + responseJson.data[\"token\"]);",
+							"",
+							"    // Melakukan request kedua setelah POST selesai",
+							"    pm.sendRequest({",
+							"        url: `https://postman-echo.com/delay/3`,  // Request untuk delay 3 detik",
+							"        method: 'GET',",
+							"        header: {",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {}",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verified Status = False\", () => {",
+							"  const responseJson = pm.response.json();",
+							"  pm.expect(responseJson.status).to.eql(false);",
+							"});",
+							"",
+							"pm.test(\"Verified Message = Data provinsi tidak ditemukan.\", () => {",
+							"  const responseJson = pm.response.json();",
+							"  pm.expect(responseJson.message).to.eql('Data provinsi tidak ditemukan.');",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_reuseable}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "report_category_id",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "Rahmat Saefulloh",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "l",
+							"type": "text"
+						},
+						{
+							"key": "province_id",
+							"value": "31",
+							"type": "text"
+						},
+						{
+							"key": "tipe_korban",
+							"value": "php",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Tes",
+							"type": "text"
+						},
+						{
+							"key": "lat",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "lng",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "address_location",
+							"value": "Cimahi",
+							"type": "text"
+						},
+						{
+							"key": "userfile",
+							"type": "file",
+							"src": "/Users/rhmtsaepuloh/Downloads/gamaharsaasia.png"
+						},
+						{
+							"key": "urgency",
+							"value": "rendah",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/api/report",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"api",
+						"report"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 - OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "report_category_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "fullname",
+									"value": "Rahmat Saefulloh",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "l",
+									"type": "text"
+								},
+								{
+									"key": "province_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "tipe_korban",
+									"value": "php",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Tes",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "lng",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "address_location",
+									"value": "Cimahi",
+									"type": "text"
+								},
+								{
+									"key": "userfile",
+									"type": "file",
+									"src": "/Users/rhmtsaepuloh/Downloads/5wPdO_1688622116.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/api/report",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"api",
+								"report"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2023 16:47:42 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2023 16:47:42 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.33"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"message\": \"Data laporan berhasil dikirim.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Report Invalid Gender Type",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Menyusun body request untuk POST /user",
+							"const requestBody = {",
+							"    \"email\": \"rhmtsaepuloh@gmail.com\",",
+							"    \"password\": \"Qwerty123!\",",
+							"    \"reg_id\": 12345",
+							"};",
+							"",
+							"",
+							"// Mengirim request POST untuk membuat user baru",
+							"pm.sendRequest({",
+							"    url: `${pm.collectionVariables.get('api')}/api/login/`,",
+							"    method: 'POST',",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify(requestBody)  // Mengirimkan requestBody sebagai JSON string",
+							"    }",
+							"}, function(err, res) {",
+							"    if (err) {",
+							"        console.log(\"Error:\", err);",
+							"        return;",
+							"    }",
+							"",
+							"    const responseJson = res.json();",
+							"",
+							"    // Menyimpan token ke dalam collection variable token_reuseable setelah response diterima",
+							"    pm.collectionVariables.set('token_reuseable', responseJson.data[\"token\"]);",
+							"",
+							"    // Menampilkan token",
+							"    console.log('Token saved in token_reuseable: ' + responseJson.data[\"token\"]);",
+							"",
+							"    // Melakukan request kedua setelah POST selesai",
+							"    pm.sendRequest({",
+							"        url: `https://postman-echo.com/delay/3`,  // Request untuk delay 3 detik",
+							"        method: 'GET',",
+							"        header: {",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {}",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create Report Response code 500 - Internal Server Error\", function () {",
+							"    pm.response.to.have.status(500);",
+							"    pm.response.to.have.status(\"Internal Server Error\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_reuseable}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "report_category_id",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "Rahmat Saefulloh",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "u",
+							"type": "text"
+						},
+						{
+							"key": "province_id",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "tipe_korban",
+							"value": "php",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Tes",
+							"type": "text"
+						},
+						{
+							"key": "lat",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "lng",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "address_location",
+							"value": "Cimahi",
+							"type": "text"
+						},
+						{
+							"key": "userfile",
+							"type": "file",
+							"src": "/Users/rhmtsaepuloh/Downloads/gamaharsaasia.png"
+						},
+						{
+							"key": "urgency",
+							"value": "rendah",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/api/report",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"api",
+						"report"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 - OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "report_category_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "fullname",
+									"value": "Rahmat Saefulloh",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "l",
+									"type": "text"
+								},
+								{
+									"key": "province_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "tipe_korban",
+									"value": "php",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Tes",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "lng",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "address_location",
+									"value": "Cimahi",
+									"type": "text"
+								},
+								{
+									"key": "userfile",
+									"type": "file",
+									"src": "/Users/rhmtsaepuloh/Downloads/5wPdO_1688622116.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/api/report",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"api",
+								"report"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2023 16:47:42 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2023 16:47:42 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.33"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"message\": \"Data laporan berhasil dikirim.\"\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Report Invalid tipe_korban type",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Menyusun body request untuk POST /user",
+							"const requestBody = {",
+							"    \"email\": \"rhmtsaepuloh@gmail.com\",",
+							"    \"password\": \"Qwerty123!\",",
+							"    \"reg_id\": 12345",
+							"};",
+							"",
+							"",
+							"// Mengirim request POST untuk membuat user baru",
+							"pm.sendRequest({",
+							"    url: `${pm.collectionVariables.get('api')}/api/login/`,",
+							"    method: 'POST',",
+							"    header: {",
+							"        \"Content-Type\": \"application/json\"",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify(requestBody)  // Mengirimkan requestBody sebagai JSON string",
+							"    }",
+							"}, function(err, res) {",
+							"    if (err) {",
+							"        console.log(\"Error:\", err);",
+							"        return;",
+							"    }",
+							"",
+							"    const responseJson = res.json();",
+							"",
+							"    // Menyimpan token ke dalam collection variable token_reuseable setelah response diterima",
+							"    pm.collectionVariables.set('token_reuseable', responseJson.data[\"token\"]);",
+							"",
+							"    // Menampilkan token",
+							"    console.log('Token saved in token_reuseable: ' + responseJson.data[\"token\"]);",
+							"",
+							"    // Melakukan request kedua setelah POST selesai",
+							"    pm.sendRequest({",
+							"        url: `https://postman-echo.com/delay/3`,  // Request untuk delay 3 detik",
+							"        method: 'GET',",
+							"        header: {",
+							"            \"Content-Type\": \"application/json\"",
+							"        },",
+							"        body: {}",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create Report Response code 500 - Internal Server Error\", function () {",
+							"    pm.response.to.have.status(500);",
+							"    pm.response.to.have.status(\"Internal Server Error\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_reuseable}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "report_category_id",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "Rahmat Saefulloh",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "l",
+							"type": "text"
+						},
+						{
+							"key": "province_id",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "tipe_korban",
+							"value": "phpdanjavascript",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Tes",
+							"type": "text"
+						},
+						{
+							"key": "lat",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "lng",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "address_location",
+							"value": "Cimahi",
+							"type": "text"
+						},
+						{
+							"key": "userfile",
+							"type": "file",
+							"src": "/Users/rhmtsaepuloh/Downloads/gamaharsaasia.png"
+						},
+						{
+							"key": "urgency",
+							"value": "rendah",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/api/report",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"api",
+						"report"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200 - OK",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "report_category_id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "fullname",
+									"value": "Rahmat Saefulloh",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "l",
+									"type": "text"
+								},
+								{
+									"key": "province_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "tipe_korban",
+									"value": "php",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Tes",
+									"type": "text"
+								},
+								{
+									"key": "lat",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "lng",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "address_location",
+									"value": "Cimahi",
+									"type": "text"
+								},
+								{
+									"key": "userfile",
+									"type": "file",
+									"src": "/Users/rhmtsaepuloh/Downloads/5wPdO_1688622116.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api}}/api/report",
+							"host": [
+								"{{api}}"
+							],
+							"path": [
+								"api",
+								"report"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2023 16:47:42 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 25 Jul 2023 16:47:42 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.4.33"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": true,\n    \"message\": \"Data laporan berhasil dikirim.\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api",
+			"value": "https://lapor.folkatech.com",
+			"type": "string"
+		},
+		{
+			"key": "token_reuseable",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
